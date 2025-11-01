@@ -55,7 +55,7 @@ struct MinHeap {
             int min = LC;
             //if RC exist && if RC<LC
             if (RC<size && weightArr[data[RC]]<weightArr[data[LC]]) min = RC;
-            if (weightArr[data[pos]] < weightArr[data[min]]) {
+            if (weightArr[data[pos]] > weightArr[data[min]]) {
                 swap(data[pos], data[min]);
                 pos = min;
             }
