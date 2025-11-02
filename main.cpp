@@ -104,9 +104,18 @@ int buildEncodingTree(int nextFree) {
     }
 
     while (heap.size>1) {
-
+        int least = heap.pop(weightArr);
+        int nextLeast = heap.pop(weightArr);
+        //pops last two nodes
+        int parent = nextFree++;
+        //create a node for the parent for each arr, defined, weight, left, right, char
+        weightArr[parent] = weightArr[least] + weightArr[nextLeast];
+        leftArr[parent] = least;
+        rightArr[parent] = nextLeast;
+        charArr[parent] = ' ';//combination of char to make parent does not make new char so placeholder
+        heap.push(parent, weightArr);
     }
-
+    return heap.pop(weightArr); //pops last node and returns the value of it in the heap
     return -1; // placeholder
 }
 
