@@ -18,7 +18,8 @@ struct MinHeap {
         // TODO: insert index at end of heap, restore order using upheap()
         if (size==64) return;
         data[size] = idx;
-        upheap(size, weightArr);
+        upheap(size, weightArr); //upheap always starts at the index you just pushed because all other values should have already been upheaped into correct position
+        //so upheap starts at size/where you pushed
         size++;
     }
 
@@ -31,7 +32,7 @@ struct MinHeap {
         int min = data[0];
         size--;
         data[0] = data[size];
-        downheap(0, weightArr);
+        downheap(0, weightArr); //downheaps start from top and heaps downwards so it always starts at index 0
         return min;
     }
 
@@ -43,7 +44,7 @@ struct MinHeap {
                 swap(data[pos], data[parent]);
                 pos = parent;
             }
-            else break;
+            else break; //stop when the parent of the node you are in is bigger than it's parent
         }
     }
 
@@ -53,13 +54,12 @@ struct MinHeap {
             int LC = pos*2 + 1;
             int RC = pos*2 + 2;
             int min = LC;
-            //if RC exist && if RC<LC
-            if (RC<size && weightArr[data[RC]]<weightArr[data[LC]]) min = RC;
+            if (RC<size && weightArr[data[RC]]<weightArr[data[LC]]) min = RC; //if RC is not out of bounds and if the LC<RC the min is RC not LC
             if (weightArr[data[pos]] > weightArr[data[min]]) {
                 swap(data[pos], data[min]);
                 pos = min;
             }
-            else break;
+            else break; //stop when the index you are in is lesser than both of it's children
 
         }
     }

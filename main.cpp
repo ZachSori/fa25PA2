@@ -98,25 +98,30 @@ int buildEncodingTree(int nextFree) {
     //    - Set left/right pointers
     //    - Push new parent index back into the heap
     // 4. Return the index of the last remaining node (root)
+    //1.
     MinHeap heap;
+    //2.
     for (int i = 0; i < nextFree; ++i) {
         heap.push(i,weightArr);
     }
-
+    //3.
     while (heap.size>1) {
         int least = heap.pop(weightArr);
         int nextLeast = heap.pop(weightArr);
-        //pops last two nodes
+        //pops last two nodes and saves them
+
         int parent = nextFree++;
-        //create a node for the parent for each arr, defined, weight, left, right, char
+
+        //create a node for the parent for each arr defined: weight, left, right, char
+        //each arr/tree are essentially duplicates of each other that hold different values that will be used
         weightArr[parent] = weightArr[least] + weightArr[nextLeast];
         leftArr[parent] = least;
         rightArr[parent] = nextLeast;
         charArr[parent] = ' ';//combination of char to make parent does not make new char so placeholder
         heap.push(parent, weightArr);
     }
+    //4.
     return heap.pop(weightArr); //pops last node and returns the value of it in the heap
-    return -1; // placeholder
 }
 
 // Step 4: Use an STL stack to generate codes
@@ -128,25 +133,23 @@ void generateCodes(int root, string codes[]) {
     stack<pair<int,string>> stack;
     stack.push({root,""});
 
-    while (!stack.empty()) {
+    while (!stack.empty()){
         pair<int,string> top = stack.top();
         stack.pop();
 
         int node = top.first;
         string code = top.second;
-        if (leftArr[node]==-1 && rightArr[node]==-1) {
+        if (leftArr[node]==-1 && rightArr[node]==-1) { //if the arr is -1 then it has reached the leaf node
             int charIndex = charArr[node] - 'a';
-            codes[charIndex] = code;
+            codes[charIndex] = code.empty() ? "0" : code; //edge case if input is one character
         }
         if (leftArr[node]!=-1) {
-            stack.push({leftArr[node], code+"0"});
+            stack.push({leftArr[node], code+"0"}); //if traverse to left adds 0 to end of code
         }
         if (rightArr[node]!=-1) {
-            stack.push({rightArr[node], code+"1"});
+            stack.push({rightArr[node], code+"1"}); //if traverse to right adds 1 to end of code
         }
     }
-    //TODO:
-    //find error, some words do not give proper code lengths
 }
 
 // Step 5: Print table and encoded message
